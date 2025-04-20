@@ -58,7 +58,7 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
     }
 
     protected int nextIndexByDegree(int degree) {
-        double percent = (double) 360 / degree;
+        double percent = (double) degree / 360;
         return getVariantIndexByPercent(percent);
     }
 
