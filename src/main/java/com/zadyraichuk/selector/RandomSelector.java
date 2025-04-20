@@ -1,16 +1,23 @@
 package com.zadyraichuk.selector;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.zadyraichuk.variant.*;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
 public class RandomSelector
-    extends AbstractRandomSelector<String, Variant<String>>
-    implements Serializable {
-
-    private static final long serialVersionUID = 9097060254207232564L;
+    extends AbstractRandomSelector<String, Variant<String>> {
 
     public RandomSelector(String name) {
         super(name, new VariantsList<>());
@@ -18,6 +25,15 @@ public class RandomSelector
 
     public RandomSelector(String name, VariantsList<String> variants) {
         super(name, variants);
+    }
+
+    @JsonCreator
+    protected RandomSelector(
+        @JsonProperty("id") long id,
+        @JsonProperty("variantsList") VariantsCollection<String, Variant<String>> variantsList,
+        @JsonProperty("name") String name,
+        @JsonProperty("currentRotation") int currentRotation) {
+        super(id, variantsList, name, currentRotation);
     }
 
     public static RandomSelector of(AbstractRandomSelector<String, ? extends Variant<String>> selector) {
@@ -30,7 +46,10 @@ public class RandomSelector
             newList.add(Variant.of(variant, VariantsCollection.totalWeight(oldList)));
         }
 
-        RandomSelector newSelector = new RandomSelector(selector.getName(), newList);
+        RandomSelector newSelector = new RandomSelector(selector.getId(),
+            newList,
+            selector.getName(),
+            selector.getCurrentRotation());
         newSelector.setCurrentRotation(selector.getCurrentRotation());
         return newSelector;
 

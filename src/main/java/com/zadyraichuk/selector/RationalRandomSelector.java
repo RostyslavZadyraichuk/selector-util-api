@@ -1,17 +1,24 @@
 package com.zadyraichuk.selector;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.zadyraichuk.general.MathUtils;
 import com.zadyraichuk.variant.*;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
 public class RationalRandomSelector
-    extends AbstractRandomSelector<String, RationalVariant<String>>
-    implements Serializable {
-
-    private static final long serialVersionUID = -7500842157433621218L;
+    extends AbstractRandomSelector<String, RationalVariant<String>> {
 
     public RationalRandomSelector(String name) {
         super(name, new RationalVariantsList<>());
@@ -19,6 +26,15 @@ public class RationalRandomSelector
 
     public RationalRandomSelector(String name, RationalVariantsList<String> variants) {
         super(name, variants);
+    }
+
+    @JsonCreator
+    protected RationalRandomSelector(
+        @JsonProperty("id") long id,
+        @JsonProperty("variantsList") VariantsCollection<String, RationalVariant<String>> variantsList,
+        @JsonProperty("name") String name,
+        @JsonProperty("currentRotation") int currentRotation) {
+        super(id, variantsList, name, currentRotation);
     }
 
     public static RationalRandomSelector of(AbstractRandomSelector<String, ? extends Variant<String>> selector) {
@@ -31,7 +47,11 @@ public class RationalRandomSelector
             newList.add(RationalVariant.of(variant));
         }
 
-        RationalRandomSelector newSelector = new RationalRandomSelector(selector.getName(), newList);
+        RationalRandomSelector newSelector = new RationalRandomSelector(
+            selector.getId(),
+            newList,
+            selector.getName(),
+            selector.getCurrentRotation());
         newSelector.setCurrentRotation(selector.getCurrentRotation());
         return newSelector;
     }

@@ -1,18 +1,27 @@
 package com.zadyraichuk.variant;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.Objects;
 
-public class VariantColor
-    implements Serializable {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
+public class VariantColor {
 
     public static final VariantColor DEFAULT = new VariantColor("#F3F3F3");
 
-    private static final long serialVersionUID = -8284197205035375012L;
-
+    @JsonProperty("hexColor")
     private final String hexColor;
 
-    public VariantColor(String hexColor) {
+    @JsonCreator
+    public VariantColor(@JsonProperty("hexColor") String hexColor) {
         this.hexColor = hexColor;
     }
 

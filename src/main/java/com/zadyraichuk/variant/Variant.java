@@ -1,7 +1,7 @@
 package com.zadyraichuk.variant;
 
+import com.fasterxml.jackson.annotation.*;
 import com.zadyraichuk.general.MathUtils;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,8 +10,17 @@ import java.util.Objects;
  * The possibility of each variant depends on variant's quantity in collection
  * and their abstract weight value.
  */
-public class Variant<E>
-    implements Serializable {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = RationalVariant.class, name = "RationalVariant")
+})
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
+public class Variant<E> {
 
     /**
      * Default weight value is the less natural number,
@@ -24,12 +33,15 @@ public class Variant<E>
      */
     public static final int DIGITS = 5;
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
+    @JsonProperty("value")
     protected E value;
 
     /**
      * <p>Abstract weight that current variant has in appropriate collection.</p>
      * It's natural number from 1 to {@link Integer#MAX_VALUE}
      */
+    @JsonProperty("variantWeight")
     protected int variantWeight;
 
     /**
@@ -37,11 +49,11 @@ public class Variant<E>
      * Calculates automatically by its own {@link #variantWeight} when is in collection.
      * Is in range from 0 to 1 both included.
      */
+    @JsonProperty("currentPercent")
     protected double currentPercent;
 
+    @JsonProperty("color")
     protected VariantColor color;
-
-    private static final long serialVersionUID = -377519670316023299L;
 
     public Variant(E value) {
         this.value = value;
@@ -49,10 +61,12 @@ public class Variant<E>
         this.color = VariantColor.DEFAULT;
     }
 
-    public Variant(E value,
-                   int variantWeight,
-                   double currentPercent,
-                   VariantColor color) {
+    @JsonCreator
+    public Variant(
+        @JsonProperty("value") E value,
+        @JsonProperty("variantWeight") int variantWeight,
+        @JsonProperty("currentPercent") double currentPercent,
+        @JsonProperty("color") VariantColor color) {
         this.value = value;
         this.variantWeight = variantWeight;
         this.currentPercent = currentPercent;
@@ -102,8 +116,12 @@ public class Variant<E>
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Variant<?> variant = (Variant<?>) o;
         return Objects.equals(value, variant.value);
     }
@@ -126,6 +144,7 @@ public class Variant<E>
 
     /**
      * Decrease current variant's percent
+     *
      * @return value that cannot be decreased because currentPercent is equal to minPercent
      */
     public double decreasePercent(double value) {
@@ -140,8 +159,9 @@ public class Variant<E>
         /**
          * Map one type objects to Variants array. Use randomly generated palette
          * with {@link VariantColor} default colors count
+         *
          * @param values objects for mapping
-         * @param <E> objects type
+         * @param <E>    objects type
          * @return Variants array with object type elements
          */
         @SafeVarargs
@@ -152,9 +172,10 @@ public class Variant<E>
 
         /**
          * Map one type objects to Variants array
+         *
          * @param colorsCount how many colors include in randomly generated palette
-         * @param values objects for mapping
-         * @param <E> objects type
+         * @param values      objects for mapping
+         * @param <E>         objects type
          * @return Variants array with object type elements
          */
         @SafeVarargs
@@ -165,10 +186,11 @@ public class Variant<E>
 
         /**
          * Map one type objects to Variants array
+         *
          * @param palette set of colors for each variant. If palette size is less than
          *                values size, than colors from palette used in loop
-         * @param values objects for mapping
-         * @param <E> objects type
+         * @param values  objects for mapping
+         * @param <E>     objects type
          * @return Variants array with object type elements
          */
         @SafeVarargs
