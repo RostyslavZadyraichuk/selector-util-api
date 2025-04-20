@@ -20,9 +20,9 @@ public class Variant<E>
     public static final int WEIGHT = 1;
 
     /**
-     * Default value of precision is 3 digits after comma.
+     * Default value of precision is 5 digits after comma.
      */
-    public static final int DIGITS = 3;
+    public static final int DIGITS = 5;
 
     protected E value;
 
