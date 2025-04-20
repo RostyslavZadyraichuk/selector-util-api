@@ -1,8 +1,19 @@
 package com.zadyraichuk.variant;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.io.Serializable;
 import java.util.List;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
 public class VariantsList<E>
     extends AbstractVariantsList<E, Variant<E>>
     implements Serializable {
@@ -13,6 +24,14 @@ public class VariantsList<E>
 
     public VariantsList(List<Variant<E>> variants) {
         super(variants);
+    }
+
+    @JsonCreator
+    protected VariantsList(
+        @JsonProperty("variants") List<Variant<E>> variants,
+        @JsonProperty("declaredTotalWeight") int declaredTotalWeight,
+        @JsonProperty("palette") VariantColorPalette palette) {
+        super(variants, declaredTotalWeight, palette);
     }
 
     @Override

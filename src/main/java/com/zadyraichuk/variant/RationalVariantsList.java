@@ -1,9 +1,20 @@
 package com.zadyraichuk.variant;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Stream;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
 public class RationalVariantsList<E>
     extends AbstractVariantsList<E, RationalVariant<E>>
     implements Serializable {
@@ -26,7 +37,14 @@ public class RationalVariantsList<E>
     @Override
     public void add(RationalVariant<E> variant) {
         super.add(variant);
+    }
 
+    @JsonCreator
+    protected RationalVariantsList(
+        @JsonProperty("variants") List<RationalVariant<E>> variants,
+        @JsonProperty("declaredTotalWeight") int declaredTotalWeight,
+        @JsonProperty("palette") VariantColorPalette palette) {
+        super(variants, declaredTotalWeight, palette);
     }
 
     @Override

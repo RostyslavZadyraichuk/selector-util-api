@@ -1,22 +1,41 @@
 package com.zadyraichuk.variant;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.zadyraichuk.general.MathUtils;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Stream;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = VariantsList.class, name = "VariantsList"),
+    @JsonSubTypes.Type(value = RationalVariantsList.class, name = "RationalVariantsList")
+})
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
 public abstract class AbstractVariantsList<E, V extends Variant<E>>
     implements VariantsCollection<E, V>, Serializable {
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
+    @JsonProperty("variants")
     protected final List<V> variants;
 
     /**
      * Collection stage for lazy normalization during obtain elements operation
      */
+    @JsonProperty("declaredTotalWeight")
     protected int declaredTotalWeight;
 
     private static final long serialVersionUID = -2543453820153602704L;
 
+    @JsonProperty("palette")
     private VariantColorPalette palette;
 
     public AbstractVariantsList() {
@@ -30,6 +49,12 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
         palette = VariantColorPalette.generateOrderedPalette();
         setUpColors();
         declaredTotalWeight = 0;
+    }
+
+    protected AbstractVariantsList(List<V> variants, int declaredTotalWeight, VariantColorPalette palette) {
+        this.variants = variants;
+        this.declaredTotalWeight = declaredTotalWeight;
+        this.palette = palette;
     }
 
     @Override

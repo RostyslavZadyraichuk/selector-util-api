@@ -1,11 +1,22 @@
 package com.zadyraichuk.selector;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.zadyraichuk.variant.*;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
 public class RandomSelector
     extends AbstractRandomSelector<String, Variant<String>>
     implements Serializable {
@@ -18,6 +29,14 @@ public class RandomSelector
 
     public RandomSelector(String name, VariantsList<String> variants) {
         super(name, variants);
+    }
+
+    @JsonCreator
+    protected RandomSelector(
+        @JsonProperty("variantsList") VariantsCollection<String, Variant<String>> variantsList,
+        @JsonProperty("name") String name,
+        @JsonProperty("currentRotation") int currentRotation) {
+        super(variantsList, name, currentRotation);
     }
 
     public static RandomSelector of(AbstractRandomSelector<String, ? extends Variant<String>> selector) {

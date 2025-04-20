@@ -1,11 +1,18 @@
 package com.zadyraichuk.variant;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.stream.Stream;
 
 /**
  * Specified set of methods classes with Variant collections must implement
  * @param <E> type of elements stored in variants
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = VariantsList.class, name = "VariantsList"),
+    @JsonSubTypes.Type(value = RationalVariantsList.class, name = "RationalVariantsList")
+})
 public interface VariantsCollection<E, V extends Variant<E>>
     extends Iterable<V> {
 

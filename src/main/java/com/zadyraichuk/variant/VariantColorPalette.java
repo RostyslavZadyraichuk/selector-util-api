@@ -1,9 +1,20 @@
 package com.zadyraichuk.variant;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.Random;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE
+)
 public class VariantColorPalette implements Serializable, Cloneable {
 
     /**
@@ -17,13 +28,23 @@ public class VariantColorPalette implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -1293535583279688045L;
 
+    @JsonProperty("colors")
     private final VariantColor[] colors;
 
+    @JsonProperty("nextColorIndex")
     private int nextColorIndex;
 
     private VariantColorPalette(int colorCount) {
         colors = new VariantColor[colorCount];
         nextColorIndex = 0;
+    }
+
+    @JsonCreator
+    protected VariantColorPalette(
+        @JsonProperty("colors") VariantColor[] colors,
+        @JsonProperty("nextColorIndex") int nextColorIndex) {
+        this.colors = colors;
+        this.nextColorIndex = nextColorIndex;
     }
 
     public static VariantColorPalette generateOrderedPalette() {
