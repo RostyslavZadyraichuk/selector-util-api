@@ -2,7 +2,6 @@ package com.zadyraichuk.variant;
 
 import com.fasterxml.jackson.annotation.*;
 import com.zadyraichuk.general.MathUtils;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -21,8 +20,7 @@ import java.util.Objects;
     setterVisibility = JsonAutoDetect.Visibility.NONE,
     isGetterVisibility = JsonAutoDetect.Visibility.NONE
 )
-public class Variant<E>
-    implements Serializable {
+public class Variant<E> {
 
     /**
      * Default weight value is the less natural number,
@@ -56,8 +54,6 @@ public class Variant<E>
 
     @JsonProperty("color")
     protected VariantColor color;
-
-    private static final long serialVersionUID = -377519670316023299L;
 
     public Variant(E value) {
         this.value = value;

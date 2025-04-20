@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.zadyraichuk.general.MathUtils;
-import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -21,7 +20,7 @@ import java.util.stream.Stream;
     isGetterVisibility = JsonAutoDetect.Visibility.NONE
 )
 public abstract class AbstractVariantsList<E, V extends Variant<E>>
-    implements VariantsCollection<E, V>, Serializable {
+    implements VariantsCollection<E, V> {
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
     @JsonProperty("variants")
@@ -32,8 +31,6 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
      */
     @JsonProperty("declaredTotalWeight")
     protected int declaredTotalWeight;
-
-    private static final long serialVersionUID = -2543453820153602704L;
 
     @JsonProperty("palette")
     private VariantColorPalette palette;

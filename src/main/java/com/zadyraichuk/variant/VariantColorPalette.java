@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.io.Serializable;
 import java.util.Optional;
 import java.util.Random;
 
@@ -15,7 +14,7 @@ import java.util.Random;
     setterVisibility = JsonAutoDetect.Visibility.NONE,
     isGetterVisibility = JsonAutoDetect.Visibility.NONE
 )
-public class VariantColorPalette implements Serializable, Cloneable {
+public class VariantColorPalette implements Cloneable {
 
     /**
      * Default colors count value for palette generation.
@@ -25,8 +24,6 @@ public class VariantColorPalette implements Serializable, Cloneable {
     public static final int MAX_COLORS_COUNT = Color.values().length;
 
     private static final Random RAND = new Random(System.currentTimeMillis());
-
-    private static final long serialVersionUID = -1293535583279688045L;
 
     @JsonProperty("colors")
     private final VariantColor[] colors;
@@ -129,7 +126,7 @@ public class VariantColorPalette implements Serializable, Cloneable {
         }
     }
 
-    protected enum Color implements Serializable {
+    protected enum Color {
         BLUE("#0089BA"),
         YELLOW("#FFC75F"),
         VIOLET("#845EC2"),

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -16,10 +15,7 @@ import java.util.stream.Stream;
     isGetterVisibility = JsonAutoDetect.Visibility.NONE
 )
 public class RationalVariantsList<E>
-    extends AbstractVariantsList<E, RationalVariant<E>>
-    implements Serializable {
-
-    private static final long serialVersionUID = -8583087989581867701L;
+    extends AbstractVariantsList<E, RationalVariant<E>> {
 
     public RationalVariantsList() {
         super();

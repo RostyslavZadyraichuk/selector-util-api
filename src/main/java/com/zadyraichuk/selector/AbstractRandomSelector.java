@@ -3,7 +3,6 @@ package com.zadyraichuk.selector;
 import com.fasterxml.jackson.annotation.*;
 import com.zadyraichuk.variant.Variant;
 import com.zadyraichuk.variant.VariantsCollection;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -20,16 +19,17 @@ import java.util.Random;
     isGetterVisibility = JsonAutoDetect.Visibility.NONE
 )
 public abstract class AbstractRandomSelector<E, V extends Variant<E>>
-    implements Selector<V>, Serializable {
+    implements Selector<V> {
 
     protected static final Random RANDOM = new Random(System.currentTimeMillis());
+
+    @JsonProperty("id")
+    private long id;
 
     //todo change to AbstractVariantsList (or even create AbstractVariantsCollection)
     @JsonProperty("variantsList")
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
     protected VariantsCollection<E, V> variantsList;
-
-    private static final long serialVersionUID = -8193684848916309585L;
 
     @JsonProperty("name")
     private String name;
@@ -38,12 +38,14 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
     private int currentRotation;
 
     public AbstractRandomSelector(String name, VariantsCollection<E, V> collection) {
+        this.id = System.currentTimeMillis();
         this.name = name;
         variantsList = collection;
         currentRotation = 90;
     }
 
-    protected AbstractRandomSelector(VariantsCollection<E, V> variantsList, String name, int currentRotation) {
+    protected AbstractRandomSelector(long id, VariantsCollection<E, V> variantsList, String name, int currentRotation) {
+        this.id = id;
         this.variantsList = variantsList;
         this.name = name;
         this.currentRotation = currentRotation;
@@ -76,6 +78,14 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     //todo check type before cast

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.zadyraichuk.general.MathUtils;
-import java.io.Serializable;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
 @JsonAutoDetect(
@@ -14,8 +13,7 @@ import java.io.Serializable;
     setterVisibility = JsonAutoDetect.Visibility.NONE,
     isGetterVisibility = JsonAutoDetect.Visibility.NONE
 )
-public class RationalVariant<E> extends Variant<E>
-    implements Serializable {
+public class RationalVariant<E> extends Variant<E> {
 
     /**
      * Default value for {@link #minPercent} precision.
@@ -34,8 +32,6 @@ public class RationalVariant<E> extends Variant<E>
      */
     @JsonProperty("minPercent")
     protected double minPercent;
-
-    private static final long serialVersionUID = -2737777185722545057L;
 
     public RationalVariant(E value) {
         super(value);

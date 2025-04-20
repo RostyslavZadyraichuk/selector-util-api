@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.io.Serializable;
 import java.util.Objects;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
@@ -14,12 +13,9 @@ import java.util.Objects;
     setterVisibility = JsonAutoDetect.Visibility.NONE,
     isGetterVisibility = JsonAutoDetect.Visibility.NONE
 )
-public class VariantColor
-    implements Serializable {
+public class VariantColor {
 
     public static final VariantColor DEFAULT = new VariantColor("#F3F3F3");
-
-    private static final long serialVersionUID = -8284197205035375012L;
 
     @JsonProperty("hexColor")
     private final String hexColor;
