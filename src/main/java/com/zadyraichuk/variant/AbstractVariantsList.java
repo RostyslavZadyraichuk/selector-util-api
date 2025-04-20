@@ -45,7 +45,7 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
         this.variants = variants;
         palette = VariantColorPalette.generateOrderedPalette();
         setUpColors();
-        declaredTotalWeight = 0;
+        initVariantPercents();
     }
 
     protected AbstractVariantsList(List<V> variants, int declaredTotalWeight, VariantColorPalette palette) {
@@ -81,11 +81,13 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
     public void add(V variant) {
         variants.add(variant);
         variant.setColor(palette.nextColor());
+        initVariantPercents();
     }
 
     public void addColored(V variant) {
         variants.add(variant);
         setNextColor();
+        initVariantPercents();
     }
 
     @Override
@@ -103,12 +105,14 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
     public void remove(int index) {
         variants.remove(index);
         setNextColor();
+        initVariantPercents();
     }
 
     @Override
     public void remove(V variant) {
         variants.remove(variant);
         setNextColor();
+        initVariantPercents();
     }
 
     @Override
