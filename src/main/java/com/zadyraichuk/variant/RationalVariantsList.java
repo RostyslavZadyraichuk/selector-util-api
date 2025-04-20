@@ -42,7 +42,6 @@ public class RationalVariantsList<E>
     @Override
     public void add(E value) {
         super.add(new RationalVariant<>(value));
-        isChanged = true;
     }
 
     @Override
@@ -50,13 +49,11 @@ public class RationalVariantsList<E>
         RationalVariant<E> variant = new RationalVariant<>(value);
         variant.setVariantWeight(variantWeight);
         super.add(variant);
-        isChanged = true;
     }
 
     @Override
     public void remove(E value) {
         super.remove(new RationalVariant<>(value));
-        isChanged = true;
     }
 
     @Override
@@ -66,8 +63,13 @@ public class RationalVariantsList<E>
 
     @Override
     public void initVariantPercents() {
-        super.initVariantPercents();
-        normalizeToOne();
+        int totalWeight = getListTotalWeight();
+        if (declaredTotalWeight != totalWeight) {
+            declaredTotalWeight = totalWeight;
+
+            initPercents();
+            normalizeToOne();
+        }
     }
 
     public void normalizeToOne() {

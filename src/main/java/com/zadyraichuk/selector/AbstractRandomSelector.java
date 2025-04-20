@@ -12,6 +12,7 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
 
     protected static final Random RANDOM = new Random(System.currentTimeMillis());
 
+    //todo change to AbstractVariantsList (or even create AbstractVariantsCollection)
     protected VariantsCollection<E, V> variantsList;
 
     private static final long serialVersionUID = -8193684848916309585L;

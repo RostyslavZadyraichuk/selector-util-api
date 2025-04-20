@@ -16,6 +16,10 @@ public class VariantColor
         this.hexColor = hexColor;
     }
 
+    public VariantColor(int reg, int green, int blue) {
+        this.hexColor = String.format("#%02x%02x%02x", reg, green, blue);
+    }
+
     public String getHexColor() {
         return hexColor;
     }

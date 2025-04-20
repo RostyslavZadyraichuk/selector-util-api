@@ -1,14 +1,17 @@
 package com.zadyraichuk.variant;
 
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Random;
 
-public class VariantColorPalette implements Serializable {
+public class VariantColorPalette implements Serializable, Cloneable {
 
     /**
      * Default colors count value for palette generation.
      */
     public static final int COLORS_COUNT = 4;
+
+    public static final int MAX_COLORS_COUNT = Color.values().length;
 
     private static final Random RAND = new Random(System.currentTimeMillis());
 
@@ -81,14 +84,28 @@ public class VariantColorPalette implements Serializable {
         nextColorIndex = index;
     }
 
-    public int indexInPalette(VariantColor color) {
+    public Optional<Integer> indexInPalette(VariantColor color) {
         for (int i = 0; i < colors.length; i++) {
             if (colors[i].equals(color))
-                return i;
+                return Optional.of(i);
         }
 
-        //TODO optional
-        return 0;
+        return Optional.empty();
+    }
+
+    public int getColorsCount() {
+        return colors.length;
+    }
+
+    @Override
+    public VariantColorPalette clone() {
+        try {
+            VariantColorPalette clone = (VariantColorPalette) super.clone();
+            clone.resetColorIndex();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected enum Color implements Serializable {
