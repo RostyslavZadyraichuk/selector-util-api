@@ -34,6 +34,12 @@ public interface VariantsCollection<E, V extends Variant<E>>
         return totalPercent;
     }
 
+    static <E, V extends Variant<E>> int minimalWeight(VariantsCollection<E, V> variants) {
+        return variants.stream()
+            .mapToInt(Variant::getVariantWeight)
+            .min().orElse(1);
+    }
+
     static <E, V extends Variant<E>> double minimalPercent(VariantsCollection<E, V> variants) {
         if (variants.isEmpty())
             return 0;
@@ -99,4 +105,6 @@ public interface VariantsCollection<E, V extends Variant<E>>
     double rightProbabilityBound(V variant);
 
     void initVariantPercents();
+
+    void normalizeToOne();
 }

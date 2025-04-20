@@ -118,6 +118,22 @@ public class Variant<E>
     }
 
     /**
+     * Increase current variant's percent
+     */
+    public void increasePercent(double value) {
+        currentPercent += MathUtils.cutRound(value, Variant.DIGITS);
+    }
+
+    /**
+     * Decrease current variant's percent
+     * @return value that cannot be decreased because currentPercent is equal to minPercent
+     */
+    public double decreasePercent(double value) {
+        currentPercent -= MathUtils.cutRound(value, Variant.DIGITS);
+        return 0;
+    }
+
+    /**
      * Converts raw values objects to array with Variants that contains these objects
      */
     public static class ValueConverter {

@@ -9,7 +9,7 @@ public class RationalVariant<E> extends Variant<E>
     /**
      * Default value for {@link #minPercent} precision.
      */
-    public static final int DIGITS_FOR_MINIMAL = 3;
+    public static final int DIGITS_FOR_MINIMAL = 5;
 
     /**
      * Default value for {@link #minPercent} definition algorithm.
@@ -57,19 +57,9 @@ public class RationalVariant<E> extends Variant<E>
         this.minPercent = MathUtils.cutFloor(realMinPercent, RationalVariant.DIGITS_FOR_MINIMAL);
     }
 
-    /**
-     * Increase current variant's percent
-     */
-    public void increasePercent(double value) {
-        currentPercent += MathUtils.cutRound(value, Variant.DIGITS);
-    }
-
-    /**
-     * Decrease current variant's percent
-     * @return value that cannot be decreased because currentPercent is equal to minPercent
-     */
+    @Override
     public double decreasePercent(double value) {
-        currentPercent -= MathUtils.cutRound(value, Variant.DIGITS);
+        super.decreasePercent(value);
         double diff = minPercent - currentPercent;
 
         if (diff < 0)

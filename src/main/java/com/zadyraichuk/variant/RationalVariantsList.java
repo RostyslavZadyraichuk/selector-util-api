@@ -62,30 +62,27 @@ public class RationalVariantsList<E>
     }
 
     @Override
-    public void initVariantPercents() {
-        int totalWeight = getListTotalWeight();
-        if (declaredTotalWeight != totalWeight) {
-            declaredTotalWeight = totalWeight;
-
-            initPercents();
-            normalizeToOne();
-        }
-    }
-
     public void normalizeToOne() {
         double minDigit = Math.pow(10, RationalVariant.DIGITS_FOR_MINIMAL * (-1));
+        int minWeight = VariantsCollection.minimalWeight(this);
         double edge = variants.stream()
             .mapToDouble(e -> minDigit * e.getVariantWeight()).sum();
 
         double total = VariantsCollection.totalPercent(this);
         if (total > 1.0) {
             while (total > 1.0) {
-                variants.forEach(e -> e.decreasePercent(minDigit * e.getVariantWeight()));
+                variants.forEach(e -> {
+                    double weightMultiplier = (double) e.getVariantWeight() / minWeight;
+                    e.decreasePercent(minDigit * weightMultiplier);
+                });
                 total = VariantsCollection.totalPercent(this);
             }
         } else if (total < 1.0 - edge) {
             while (total < 1.0 - edge) {
-                variants.forEach(e -> e.increasePercent(minDigit * e.getVariantWeight()));
+                variants.forEach(e -> {
+                    double weightMultiplier = (double) e.getVariantWeight() / minWeight;
+                    e.increasePercent(minDigit * weightMultiplier);
+                });
                 total = VariantsCollection.totalPercent(this);
             }
         }

@@ -30,7 +30,10 @@ public class RationalRandomSelector
         for (Variant<String> variant : oldList) {
             newList.add(RationalVariant.of(variant));
         }
-        return new RationalRandomSelector(selector.getName(), newList);
+
+        RationalRandomSelector newSelector = new RationalRandomSelector(selector.getName(), newList);
+        newSelector.setCurrentRotation(selector.getCurrentRotation());
+        return newSelector;
     }
 
     @Override
@@ -82,7 +85,7 @@ public class RationalRandomSelector
                 variantsList.get(i).increasePercent(increaseValue);
         }
 
-        ((RationalVariantsList<String>)variantsList).normalizeToOne();
+        variantsList.normalizeToOne();
     }
 
 }
