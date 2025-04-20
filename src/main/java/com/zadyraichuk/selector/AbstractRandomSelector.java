@@ -8,7 +8,7 @@ import java.util.Random;
 
 //todo add documentation
 public abstract class AbstractRandomSelector<E, V extends Variant<E>>
-    implements Selector<Variant<E>>, Serializable {
+    implements Selector<V>, Serializable {
 
     protected static final Random RANDOM = new Random(System.currentTimeMillis());
 
@@ -52,6 +52,11 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    //todo check type before cast
+    public int indexOf(Variant<E> variant) {
+        return variantsList.indexOf((V) variant);
     }
 
     protected int nextRandomIndex() {

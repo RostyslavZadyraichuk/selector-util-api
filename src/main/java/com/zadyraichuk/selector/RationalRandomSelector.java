@@ -56,7 +56,7 @@ public class RationalRandomSelector
     }
 
     @Override
-    public Variant<String> select(int degree) {
+    public RationalVariant<String> select(int degree) {
         int nextVariantIndex = super.nextIndexByDegree(degree);
         setSelected(nextVariantIndex);
         return variantsList.get(nextVariantIndex);

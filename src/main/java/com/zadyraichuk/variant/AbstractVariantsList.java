@@ -88,6 +88,11 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
     }
 
     @Override
+    public int indexOf(V variant) {
+        return variants.indexOf(variant);
+    }
+
+    @Override
     public boolean isEmpty() {
         return variants.isEmpty();
     }

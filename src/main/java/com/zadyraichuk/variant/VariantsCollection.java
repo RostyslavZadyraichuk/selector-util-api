@@ -64,6 +64,8 @@ public interface VariantsCollection<E, V extends Variant<E>>
 
     boolean contains(V variant);
 
+    int indexOf(V variant);
+
     boolean isEmpty();
 
     int size();
