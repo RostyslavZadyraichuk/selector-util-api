@@ -1,9 +1,4 @@
-package com.zadyraichuk.selector;
-
-import com.zadyraichuk.variant.RationalVariant;
-import com.zadyraichuk.variant.RationalVariantsList;
-import com.zadyraichuk.variant.Variant;
-import com.zadyraichuk.variant.VariantsCollection;
+package com.zadyraichuk.variant;
 
 public class VariantsCollectionStatistic {
 
@@ -27,20 +22,21 @@ public class VariantsCollectionStatistic {
 
     protected static void showCollectionStatistic(VariantsCollection<?, ?> variants) {
         String oneItem = "#";
-        double oneItemPercent = VariantsCollection.getOneWeightPercent(variants);
+        double realTotalPercent = VariantsCollection.totalPercent(variants);
+        double singleWeightPercent = VariantsCollection.singleWeightPercent(variants, realTotalPercent);
 
         System.out.printf("Single weight: %s = %.3f%n",
-                oneItem, oneItemPercent);
-        System.out.printf("Total weights: %d%n", VariantsCollection.getTotalWeight(variants));
-        System.out.printf("Total percent: %f%n", VariantsCollection.getTotalPercent(variants));
+            oneItem, singleWeightPercent);
+        System.out.printf("Total weights: %d%n", VariantsCollection.totalWeight(variants));
+        System.out.printf("Total percent: %f%n", VariantsCollection.totalPercent(variants));
     }
 
     protected static void showVariants(VariantsCollection<?, ?> variants) {
         String oneItem = "#";
-        double minimalPercent = VariantsCollection.getMinimalPercent(variants);
+        double minimalPercent = VariantsCollection.minimalPercent(variants);
 
         System.out.printf("\t%-20s: Percent | %-20s | %-20s%n",
-                "Element", "Init weight", "Weight");
+            "Element", "Init weight", "Weight");
 
         for (Variant<?> variant : variants) {
             String initialWeight = oneItem.repeat(variant.getVariantWeight());
@@ -50,19 +46,19 @@ public class VariantsCollectionStatistic {
                 currentWeight.append('|');
 
             System.out.printf("\t%-20s: %6.3f%% | %-20s | %-20s%n",
-                    variant.getValue(),
-                    variant.getCurrentPercent(),
-                    initialWeight,
-                    currentWeight);
+                variant.getValue(),
+                variant.getCurrentPercent(),
+                initialWeight,
+                currentWeight);
         }
     }
 
     protected static void showVariants(RationalVariantsList<?> variants) {
         String oneItem = "#";
-        double minimalPercent = VariantsCollection.getMinimalPercent(variants);
+        double minimalPercent = VariantsCollection.minimalPercent(variants);
 
         System.out.printf("\t%-20s: Min percent | Percent | %-20s | %-20s%n",
-                "Element", "Init weight", "Weight");
+            "Element", "Init weight", "Weight");
 
         for (RationalVariant<?> variant : variants) {
             String initialWeight = oneItem.repeat(variant.getVariantWeight());
@@ -72,12 +68,12 @@ public class VariantsCollectionStatistic {
                 currentWeight.append('|');
 
             System.out.printf("\t%-20s: %10.3f%% | %6.3f%% | %-20s | %-20s%n",
-                    variant.getValue(),
-                    variant.getMinPercent(),
-                    variant.getCurrentPercent(),
-                    initialWeight,
-                    currentWeight);
+                variant.getValue(),
+                variant.getMinPercent(),
+                variant.getCurrentPercent(),
+                initialWeight,
+                currentWeight);
         }
     }
-    
+
 }

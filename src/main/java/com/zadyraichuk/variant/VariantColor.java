@@ -1,11 +1,13 @@
 package com.zadyraichuk.variant;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Set of possible wheel's colors for Selector application
  */
-public enum VariantColor {
+public enum VariantColor
+    implements Serializable {
     DEFAULT("#F3F3F3"),
     BLUE("#0089BA"),
     YELLOW("#FFC75F"),
@@ -50,11 +52,13 @@ public enum VariantColor {
 
         int startPos = RAND.nextInt(values().length - 1) + 1;
         VariantColor[] palette = new VariantColor[colorsCount];
-        for (int i = startPos; i < colorsCount; i++) {
-            palette[i] = VariantColor.values()[i++];
 
-            if (i > VariantColor.values().length - 1)
-                i = 1;
+        int counter = 0;
+        while (counter < colorsCount) {
+            palette[counter++] = VariantColor.values()[startPos++];
+
+            if (startPos > VariantColor.values().length - 1)
+                startPos = 1;
         }
         return palette;
     }

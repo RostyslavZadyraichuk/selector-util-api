@@ -2,22 +2,26 @@ package com.zadyraichuk.selector;
 
 import com.zadyraichuk.variant.Variant;
 import com.zadyraichuk.variant.VariantsCollection;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
 //todo add documentation
 public abstract class AbstractRandomSelector<E, V extends Variant<E>>
-        implements Selectable<Variant<E>> {
+    implements Selector<Variant<E>>, Serializable {
 
     protected static final Random RANDOM = new Random(System.currentTimeMillis());
 
     protected VariantsCollection<E, V> variantsList;
 
-    private int lastRotateDegree;
+    private String name;
 
-    public AbstractRandomSelector(VariantsCollection<E, V> collection) {
+    private int currentRotation;
+
+    public AbstractRandomSelector(String name, VariantsCollection<E, V> collection) {
+        this.name = name;
         variantsList = collection;
-        lastRotateDegree = 90;
+        currentRotation = 90;
     }
 
     public abstract void setVariants(List<?> values);
@@ -28,26 +32,43 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
         return variantsList;
     }
 
-    public int getLastRotateDegree() {
-        return lastRotateDegree;
+    public int getCurrentRotation() {
+        return currentRotation;
     }
 
-    public void setLastRotateDegree(int lastRotateDegree) {
-        this.lastRotateDegree = lastRotateDegree % 360;
+    public void setCurrentRotation(int currentRotation) {
+        this.currentRotation = currentRotation % 360;
     }
 
     public void setVariantsList(VariantsCollection<E, V> variantsList) {
         this.variantsList = variantsList;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     protected int nextRandomIndex() {
+        double percent = AbstractRandomSelector.RANDOM.nextDouble();
+        return getVariantIndexByPercent(percent);
+    }
+
+    protected int nextIndexByDegree(int degree) {
+        double percent = (double) 360 / degree;
+        return getVariantIndexByPercent(percent);
+    }
+
+    private int getVariantIndexByPercent(double percent) {
         double[] probabilities = variantsList.probabilities();
-        double selected = AbstractRandomSelector.RANDOM.nextDouble();
 
         double sum = 0;
         for (int i = 0; i < probabilities.length; i++) {
             sum += probabilities[i];
-            if (selected <= sum)
+            if (percent <= sum)
                 return i;
         }
 

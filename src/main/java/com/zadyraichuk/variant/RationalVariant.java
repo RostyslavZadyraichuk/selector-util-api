@@ -1,8 +1,10 @@
 package com.zadyraichuk.variant;
 
 import com.zadyraichuk.general.MathUtils;
+import java.io.Serializable;
 
-public class RationalVariant<E> extends Variant<E> {
+public class RationalVariant<E> extends Variant<E>
+    implements Serializable {
 
     /**
      * Default value for {@link #minPercent} precision.
@@ -37,7 +39,7 @@ public class RationalVariant<E> extends Variant<E> {
 
     public static <E> RationalVariant<E> of(Variant<E> variant) {
         return new RationalVariant<>(variant.value, variant.variantWeight,
-                variant.currentPercent, variant.color);
+            variant.currentPercent, variant.color);
     }
 
     public double getMinPercent() {

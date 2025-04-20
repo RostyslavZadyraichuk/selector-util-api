@@ -6,13 +6,15 @@ import java.util.stream.Stream;
  * Specified set of methods classes with Variant collections must implement
  * @param <E> type of elements stored in variants
  */
-public interface VariantsCollection<E, V extends Variant<E>> extends Iterable<V> {
+public interface VariantsCollection<E, V extends Variant<E>>
+    extends Iterable<V> {
 
-    static <E, V extends Variant<E>> double getOneWeightPercent(VariantsCollection<E, V> variants) {
-        return getTotalPercent(variants) / getTotalWeight(variants);
+    static <E, V extends Variant<E>> double singleWeightPercent(VariantsCollection<E, V> variants,
+                                                                double totalPercent) {
+        return totalPercent / totalWeight(variants);
     }
 
-    static <E, V extends Variant<E>> int getTotalWeight(VariantsCollection<E, V> variants) {
+    static <E, V extends Variant<E>> int totalWeight(VariantsCollection<E, V> variants) {
         int totalWeight = 0;
 
         for (V variant : variants) {
@@ -22,7 +24,7 @@ public interface VariantsCollection<E, V extends Variant<E>> extends Iterable<V>
         return totalWeight;
     }
 
-    static <E, V extends Variant<E>> double getTotalPercent(VariantsCollection<E, V> variants) {
+    static <E, V extends Variant<E>> double totalPercent(VariantsCollection<E, V> variants) {
         double totalPercent = 0;
 
         for (V variant : variants) {
@@ -32,12 +34,12 @@ public interface VariantsCollection<E, V extends Variant<E>> extends Iterable<V>
         return totalPercent;
     }
 
-    static <E, V extends Variant<E>> double getMinimalPercent(VariantsCollection<E, V> variants) {
+    static <E, V extends Variant<E>> double minimalPercent(VariantsCollection<E, V> variants) {
         if (variants.isEmpty())
             return 0;
         return variants.stream()
-                .mapToDouble(Variant::getCurrentPercent)
-                .min().orElse(0);
+            .mapToDouble(Variant::getCurrentPercent)
+            .min().orElse(0);
     }
 
     E getValue(int index);
@@ -94,4 +96,5 @@ public interface VariantsCollection<E, V extends Variant<E>> extends Iterable<V>
      */
     double rightProbabilityBound(V variant);
 
+    void initVariantPercents();
 }
