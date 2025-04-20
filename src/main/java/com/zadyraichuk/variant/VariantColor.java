@@ -1,89 +1,35 @@
 package com.zadyraichuk.variant;
 
 import java.io.Serializable;
-import java.util.Random;
+import java.util.Objects;
 
-/**
- * Set of possible wheel's colors for Selector application
- */
-public enum VariantColor
+public class VariantColor
     implements Serializable {
-    DEFAULT("#F3F3F3"),
-    BLUE("#0089BA"),
-    YELLOW("#FFC75F"),
-    VIOLET("#845EC2"),
-    ORANGE("#FF9671"),
-    PURPLE("#D65DB1"),
-    PINK("#FF6F91"),
-    LAWANDA("#B39CD0"),
-    GREEN("#008F7A"),
-    OLIVE("#909741"),
-    RED("#C34A36"),
-    CORAL("#FF8066"),
-    LEMON("#F9F871");
 
-    private static final Random RAND = new Random(System.currentTimeMillis());
+    public static final VariantColor DEFAULT = new VariantColor("#F3F3F3");
 
-    private static final long serialVersionUID = 3895569814771205112L;
-
-    /**
-     * Default colors count value for palette generation.
-     */
-    static final int COLORS_COUNT = 4;
+    private static final long serialVersionUID = -8284197205035375012L;
 
     private final String hexColor;
 
-    VariantColor(String hexColor) {
+    public VariantColor(String hexColor) {
         this.hexColor = hexColor;
-    }
-
-    public static VariantColor[] generateOrderedPalette() {
-        return generateOrderedPalette(COLORS_COUNT);
-    }
-
-    /**
-     * Generates palette which consists of ordered colors except {@link #DEFAULT}.
-     * @param colorsCount palette size
-     * @return {@link VariantColor} array
-     */
-    public static VariantColor[] generateOrderedPalette(int colorsCount) {
-        if (colorsCount <= 0)
-            return new VariantColor[0];
-        else if (colorsCount > VariantColor.values().length)
-            colorsCount = VariantColor.values().length;
-
-        int startPos = RAND.nextInt(values().length - 1) + 1;
-        VariantColor[] palette = new VariantColor[colorsCount];
-
-        int counter = 0;
-        while (counter < colorsCount) {
-            palette[counter++] = VariantColor.values()[startPos++];
-
-            if (startPos > VariantColor.values().length - 1)
-                startPos = 1;
-        }
-        return palette;
-    }
-
-    public static VariantColor[] generateRandomPalette() {
-        return generateRandomPalette(COLORS_COUNT);
-    }
-
-    public static VariantColor[] generateRandomPalette(int colorsCount) {
-        if (colorsCount <= 0)
-            return new VariantColor[0];
-        else if (colorsCount > VariantColor.values().length)
-            colorsCount = VariantColor.values().length;
-
-        VariantColor[] palette = new VariantColor[colorsCount];
-        for (int i = 0; i < palette.length; i++) {
-            int colorPos = RAND.nextInt(values().length);
-            palette[i] = VariantColor.values()[colorPos];
-        }
-        return palette;
     }
 
     public String getHexColor() {
         return hexColor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VariantColor)) return false;
+        VariantColor that = (VariantColor) o;
+        return Objects.equals(hexColor, that.hexColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(hexColor);
     }
 }

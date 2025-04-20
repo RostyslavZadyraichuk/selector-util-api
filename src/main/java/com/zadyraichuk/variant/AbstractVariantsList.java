@@ -18,21 +18,19 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
      */
     protected boolean isChanged;
 
-    private static final long serialVersionUID = -5403449171648950107L;
+    private static final long serialVersionUID = -2543453820153602704L;
 
-    private VariantColor[] palette;
-
-    private int nextColorIndex;
+    private VariantColorPalette palette;
 
     public AbstractVariantsList() {
         variants = new ArrayList<>();
-        palette = VariantColor.generateOrderedPalette();
+        palette = VariantColorPalette.generateOrderedPalette();
         isChanged = true;
     }
 
     public AbstractVariantsList(List<V> variants) {
         this.variants = variants;
-        palette = VariantColor.generateOrderedPalette();
+        palette = VariantColorPalette.generateOrderedPalette();
         setUpColors();
         isChanged = true;
     }
@@ -52,7 +50,7 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
     @Override
     public void add(V variant) {
         variants.add(variant);
-        variant.setColor(nextColor());
+        variant.setColor(palette.nextColor());
         isChanged = true;
     }
 
@@ -167,79 +165,37 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
                     variant.setCurrentPercent(normalized);
                 }
             }
-
-            normalizeToOne();
         }
     }
 
-    public VariantColor[] getPalette() {
+    public VariantColorPalette getPalette() {
         return palette;
     }
 
-    public void setPalette(VariantColor[] palette) {
+    public void setPalette(VariantColorPalette palette) {
         this.palette = palette;
     }
 
-    public void normalizeToOne() {
-        double minDigit = Math.pow(10, RationalVariant.DIGITS_FOR_MINIMAL * (-1));
-        double edge = variants.stream()
-            .mapToDouble(e -> minDigit * e.getVariantWeight()).sum();
-
-        double total = VariantsCollection.totalPercent(this);
-        if (total > 1.0) {
-            while (total > 1.0) {
-                variants.stream()
-                    .map(e -> (RationalVariant<E>) e)
-                    .forEach(e -> e.decreasePercent(minDigit * e.getVariantWeight()));
-                total = VariantsCollection.totalPercent(this);
-            }
-        } else if (total < 1.0 - edge) {
-            while (total < 1.0 - edge) {
-                variants.stream()
-                    .map(e -> (RationalVariant<E>) e)
-                    .forEach(e -> e.increasePercent(minDigit * e.getVariantWeight()));
-                total = VariantsCollection.totalPercent(this);
-            }
-        }
-    }
-
     public void generateNewPalette(int colorsCount) {
-        palette = VariantColor.generateOrderedPalette(colorsCount);
+        palette = VariantColorPalette.generateOrderedPalette(colorsCount);
         setUpColors();
     }
 
     private void setUpColors() {
-        nextColorIndex = 0;
+        palette.resetColorIndex();
 
         for (V variant : variants) {
-            variant.setColor(nextColor());
+            variant.setColor(palette.nextColor());
         }
     }
 
     private void updateColors(V removed, int updateStartIndex) {
-        nextColorIndex = indexInPalette(removed.getColor());
+        int nextColorIndex = palette.indexInPalette(removed.getColor());
+        palette.setColorIndex(nextColorIndex);
 
         for (int i = updateStartIndex; i < variants.size(); i++) {
-            variants.get(i).setColor(nextColor());
+            variants.get(i).setColor(palette.nextColor());
         }
     }
 
-    private VariantColor nextColor() {
-        VariantColor color = palette[nextColorIndex];
-        nextColorIndex++;
-        if (nextColorIndex >= palette.length)
-            nextColorIndex = 0;
-
-        return color;
-    }
-
-    private int indexInPalette(VariantColor color) {
-        for (int i = 0; i < palette.length; i++) {
-            if (palette[i].ordinal() == color.ordinal())
-                return i;
-        }
-
-        //TODO optional
-        return 0;
-    }
 }

@@ -63,4 +63,30 @@ public class RationalVariantsList<E>
     public boolean contains(E value) {
         return variants.contains(new RationalVariant<>(value));
     }
+
+    @Override
+    public void initVariantPercents() {
+        super.initVariantPercents();
+        normalizeToOne();
+    }
+
+    public void normalizeToOne() {
+        double minDigit = Math.pow(10, RationalVariant.DIGITS_FOR_MINIMAL * (-1));
+        double edge = variants.stream()
+            .mapToDouble(e -> minDigit * e.getVariantWeight()).sum();
+
+        double total = VariantsCollection.totalPercent(this);
+        if (total > 1.0) {
+            while (total > 1.0) {
+                variants.forEach(e -> e.decreasePercent(minDigit * e.getVariantWeight()));
+                total = VariantsCollection.totalPercent(this);
+            }
+        } else if (total < 1.0 - edge) {
+            while (total < 1.0 - edge) {
+                variants.forEach(e -> e.increasePercent(minDigit * e.getVariantWeight()));
+                total = VariantsCollection.totalPercent(this);
+            }
+        }
+    }
+
 }
