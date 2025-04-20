@@ -1,9 +1,6 @@
 package com.zadyraichuk.selector;
 
-import com.zadyraichuk.variant.RationalVariant;
-import com.zadyraichuk.variant.RationalVariantsList;
-import com.zadyraichuk.variant.Variant;
-import com.zadyraichuk.variant.VariantsList;
+import com.zadyraichuk.variant.*;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +10,8 @@ public class RandomSelector
     extends AbstractRandomSelector<String, Variant<String>>
     implements Serializable {
 
+    private static final long serialVersionUID = 9097060254207232564L;
+
     public RandomSelector(String name) {
         super(name, new VariantsList<>());
     }
@@ -21,12 +20,14 @@ public class RandomSelector
         super(name, variants);
     }
 
-    public static RationalRandomSelector of(RandomSelector selector) {
-        RationalVariantsList<String> newList = new RationalVariantsList<>();
-        for (Variant<String> variant : selector.getVariantsList()) {
-            newList.add(RationalVariant.of(variant));
+    public static RandomSelector of(AbstractRandomSelector<String, ? extends Variant<String>> selector) {
+        VariantsList<String> newList = new VariantsList<>();
+        VariantsCollection<String, ? extends Variant<String>> oldList = selector.getVariantsList();
+        newList.setPalette(((AbstractVariantsList<?, ?>) oldList).getPalette());
+        for (Variant<String> variant : oldList) {
+            newList.add(Variant.of(variant, VariantsCollection.totalWeight(oldList)));
         }
-        return new RationalRandomSelector(selector.getName(), newList);
+        return new RandomSelector(selector.getName(), newList);
     }
 
     @Override

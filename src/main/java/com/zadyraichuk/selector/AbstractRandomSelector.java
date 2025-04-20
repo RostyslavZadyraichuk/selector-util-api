@@ -14,6 +14,8 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
 
     protected VariantsCollection<E, V> variantsList;
 
+    private static final long serialVersionUID = -8193684848916309585L;
+
     private String name;
 
     private int currentRotation;

@@ -18,6 +18,8 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
      */
     protected boolean isChanged;
 
+    private static final long serialVersionUID = -5403449171648950107L;
+
     private VariantColor[] palette;
 
     private int nextColorIndex;
@@ -163,6 +165,14 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
 
             normalizeToOne();
         }
+    }
+
+    public VariantColor[] getPalette() {
+        return palette;
+    }
+
+    public void setPalette(VariantColor[] palette) {
+        this.palette = palette;
     }
 
     public void normalizeToOne() {

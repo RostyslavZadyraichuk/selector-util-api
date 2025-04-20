@@ -7,6 +7,8 @@ public class VariantsList<E>
     extends AbstractVariantsList<E, Variant<E>>
     implements Serializable {
 
+    private static final long serialVersionUID = -1417506786550866887L;
+
     public VariantsList() {}
 
     public VariantsList(List<Variant<E>> variants) {

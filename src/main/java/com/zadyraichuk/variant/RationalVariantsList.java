@@ -8,6 +8,8 @@ public class RationalVariantsList<E>
     extends AbstractVariantsList<E, RationalVariant<E>>
     implements Serializable {
 
+    private static final long serialVersionUID = -8583087989581867701L;
+
     public RationalVariantsList() {
         super();
     }

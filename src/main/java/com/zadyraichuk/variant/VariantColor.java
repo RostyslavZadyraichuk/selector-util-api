@@ -22,7 +22,9 @@ public enum VariantColor
     CORAL("#FF8066"),
     LEMON("#F9F871");
 
-    static final Random RAND = new Random(System.currentTimeMillis());
+    private static final Random RAND = new Random(System.currentTimeMillis());
+
+    private static final long serialVersionUID = 3895569814771205112L;
 
     /**
      * Default colors count value for palette generation.

@@ -41,6 +41,8 @@ public class Variant<E>
 
     protected VariantColor color;
 
+    private static final long serialVersionUID = -377519670316023299L;
+
     public Variant(E value) {
         this.value = value;
         this.variantWeight = Variant.WEIGHT;
@@ -57,7 +59,7 @@ public class Variant<E>
         this.color = color;
     }
 
-    public static <E> Variant<E> of(RationalVariant<E> variant, int totalWeight) {
+    public static <E> Variant<E> of(Variant<E> variant, int totalWeight) {
         double initPercent = (double) variant.getVariantWeight() / totalWeight;
         return new Variant<>(variant.value, variant.variantWeight, initPercent, variant.color);
     }

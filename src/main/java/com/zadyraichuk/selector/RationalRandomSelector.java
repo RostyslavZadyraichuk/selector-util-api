@@ -11,6 +11,8 @@ public class RationalRandomSelector
     extends AbstractRandomSelector<String, RationalVariant<String>>
     implements Serializable {
 
+    private static final long serialVersionUID = -7500842157433621218L;
+
     public RationalRandomSelector(String name) {
         super(name, new RationalVariantsList<>());
     }
@@ -19,13 +21,14 @@ public class RationalRandomSelector
         super(name, variants);
     }
 
-    public static RandomSelector of(RationalRandomSelector selector) {
-        VariantsList<String> newList = new VariantsList<>();
-        VariantsCollection<String, RationalVariant<String>> oldList = selector.getVariantsList();
-        for (RationalVariant<String> variant : oldList) {
-            newList.add(Variant.of(variant, VariantsCollection.totalWeight(oldList)));
+    public static RationalRandomSelector of(AbstractRandomSelector<String, ? extends Variant<String>> selector) {
+        RationalVariantsList<String> newList = new RationalVariantsList<>();
+        VariantsCollection<String, ? extends Variant<String>> oldList = selector.getVariantsList();
+        newList.setPalette(((AbstractVariantsList<?, ?>) oldList).getPalette());
+        for (Variant<String> variant : oldList) {
+            newList.add(RationalVariant.of(variant));
         }
-        return new RandomSelector(selector.getName(), newList);
+        return new RationalRandomSelector(selector.getName(), newList);
     }
 
     @Override
