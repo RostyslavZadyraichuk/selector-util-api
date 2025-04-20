@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
 @JsonAutoDetect(
@@ -43,14 +43,11 @@ public class RationalVariantsList<E>
         super(variants, declaredTotalWeight, palette);
     }
 
-    @Override
-    public void remove(RationalVariant<E> variant) {
-        super.remove(variant);
-    }
-
-    @Override
-    public Stream<RationalVariant<E>> stream() {
-        return super.stream();
+    public static <E> RationalVariantsList<E> of(VariantsList<E> variantsList) {
+        List<RationalVariant<E>> variants = variantsList.variants.stream()
+            .map(RationalVariant::of)
+            .collect(Collectors.toList());
+        return new RationalVariantsList<>(variants, variantsList.getListTotalWeight(), variantsList.getPalette());
     }
 
     @Override
