@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 /**
  * <p>Collection that allow to select only one value in defined way</p>
+ *
  * @param <E> type of stored objects
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")

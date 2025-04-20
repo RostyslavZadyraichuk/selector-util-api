@@ -35,8 +35,12 @@ public class VariantColor {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof VariantColor)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof VariantColor)) {
+            return false;
+        }
         VariantColor that = (VariantColor) o;
         return Objects.equals(hexColor, that.hexColor);
     }

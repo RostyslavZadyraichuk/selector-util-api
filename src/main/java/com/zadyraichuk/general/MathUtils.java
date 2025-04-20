@@ -4,7 +4,8 @@ public final class MathUtils {
 
     /**
      * Cut double value to defined digits count after comma using Math.round
-     * @param value double value needed cutting
+     *
+     * @param value  double value needed cutting
      * @param digits integer value of digits count after comma
      * @return cut value
      */
@@ -15,7 +16,8 @@ public final class MathUtils {
 
     /**
      * Cut double value to defined digits count after comma using Math.ceil
-     * @param value double value needed cutting
+     *
+     * @param value  double value needed cutting
      * @param digits integer value of digits count after comma
      * @return cut value
      */
@@ -26,7 +28,8 @@ public final class MathUtils {
 
     /**
      * Cut double value to defined digits count after comma using Math.floor
-     * @param value double value needed cutting
+     *
+     * @param value  double value needed cutting
      * @param digits integer value of digits count after comma
      * @return cut value
      */

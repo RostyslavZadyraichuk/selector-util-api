@@ -162,8 +162,9 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
         double percentSum = 0;
 
         for (V v : variants) {
-            if (v.equals(variant))
+            if (v.equals(variant)) {
                 break;
+            }
 
             percentSum += v.getCurrentPercent();
         }
@@ -174,8 +175,9 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
     @Override
     public double rightProbabilityBound(V variant) {
         int variantIndex = variants.indexOf(variant);
-        if (variantIndex == -1)
+        if (variantIndex == -1) {
             return 0;
+        }
 
         variant = variants.get(variantIndex);
         return leftProbabilityBound(variant) + variant.getCurrentPercent();

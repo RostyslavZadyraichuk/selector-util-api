@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 /**
  * Specified set of methods classes with Variant collections must implement
+ *
  * @param <E> type of elements stored in variants
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
@@ -48,8 +49,9 @@ public interface VariantsCollection<E, V extends Variant<E>>
     }
 
     static <E, V extends Variant<E>> double minimalPercent(VariantsCollection<E, V> variants) {
-        if (variants.isEmpty())
+        if (variants.isEmpty()) {
             return 0;
+        }
         return variants.stream()
             .mapToDouble(Variant::getCurrentPercent)
             .min().orElse(0);
@@ -98,6 +100,7 @@ public interface VariantsCollection<E, V extends Variant<E>>
     /**
      * Min probability percent must be generated that variant will be selected.
      * Calculates as sum all previous variants percent.
+     *
      * @param variant element in collection that must be selected
      * @return left percent bound
      */
@@ -106,6 +109,7 @@ public interface VariantsCollection<E, V extends Variant<E>>
     /**
      * Max probability percent must be generated that variant will be selected.
      * Calculates as sum all previous and current variants percent.
+     *
      * @param variant element in collection that must be selected
      * @return right percent bound
      */

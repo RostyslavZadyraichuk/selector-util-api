@@ -16,7 +16,8 @@ import java.util.List;
 public class VariantsList<E>
     extends AbstractVariantsList<E, Variant<E>> {
 
-    public VariantsList() {}
+    public VariantsList() {
+    }
 
     public VariantsList(List<Variant<E>> variants) {
         super(variants);

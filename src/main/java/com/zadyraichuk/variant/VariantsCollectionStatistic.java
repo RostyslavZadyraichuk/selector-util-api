@@ -42,8 +42,9 @@ public class VariantsCollectionStatistic {
             String initialWeight = oneItem.repeat(variant.getVariantWeight());
             double percentWeight = variant.getPercentWeight(minimalPercent);
             StringBuilder currentWeight = new StringBuilder(oneItem.repeat((int) percentWeight));
-            if (percentWeight % 1 >= 0.5)
+            if (percentWeight % 1 >= 0.5) {
                 currentWeight.append('|');
+            }
 
             System.out.printf("\t%-20s: %6.3f%% | %-20s | %-20s%n",
                 variant.getValue(),
@@ -64,8 +65,9 @@ public class VariantsCollectionStatistic {
             String initialWeight = oneItem.repeat(variant.getVariantWeight());
             double percentWeight = variant.getPercentWeight(minimalPercent);
             StringBuilder currentWeight = new StringBuilder(oneItem.repeat((int) percentWeight));
-            if (percentWeight % 1 >= 0.5)
+            if (percentWeight % 1 >= 0.5) {
                 currentWeight.append('|');
+            }
 
             System.out.printf("\t%-20s: %10.3f%% | %6.3f%% | %-20s | %-20s%n",
                 variant.getValue(),

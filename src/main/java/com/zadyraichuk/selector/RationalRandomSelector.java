@@ -101,8 +101,9 @@ public class RationalRandomSelector
             MathUtils.cutRound(decreaseValue / (size - 1), Variant.DIGITS);
 
         for (int i = 0; i < size; i++) {
-            if (i != index)
+            if (i != index) {
                 variantsList.get(i).increasePercent(increaseValue);
+            }
         }
 
         variantsList.normalizeToOne();

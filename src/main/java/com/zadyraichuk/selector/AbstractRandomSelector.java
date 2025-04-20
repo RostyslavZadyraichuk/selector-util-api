@@ -109,8 +109,9 @@ public abstract class AbstractRandomSelector<E, V extends Variant<E>>
         double sum = 0;
         for (int i = 0; i < probabilities.length; i++) {
             sum += probabilities[i];
-            if (percent <= sum)
+            if (percent <= sum) {
                 return i;
+            }
         }
 
         return probabilities.length - 1;

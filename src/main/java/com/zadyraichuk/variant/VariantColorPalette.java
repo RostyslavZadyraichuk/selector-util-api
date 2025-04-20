@@ -49,10 +49,11 @@ public class VariantColorPalette implements Cloneable {
     }
 
     public static VariantColorPalette generateOrderedPalette(int colorsCount) {
-        if (colorsCount <= 0)
+        if (colorsCount <= 0) {
             return new VariantColorPalette(0);
-        else if (colorsCount > Color.values().length)
+        } else if (colorsCount > Color.values().length) {
             colorsCount = Color.values().length;
+        }
 
         int startPos = RAND.nextInt(Color.values().length);
         VariantColorPalette palette = new VariantColorPalette(colorsCount);
@@ -61,8 +62,9 @@ public class VariantColorPalette implements Cloneable {
         while (counter < colorsCount) {
             palette.colors[counter++] = Color.values()[startPos++].color;
 
-            if (startPos > Color.values().length - 1)
+            if (startPos > Color.values().length - 1) {
                 startPos = 0;
+            }
         }
         return palette;
     }
@@ -72,10 +74,11 @@ public class VariantColorPalette implements Cloneable {
     }
 
     public static VariantColorPalette generateRandomPalette(int colorsCount) {
-        if (colorsCount <= 0)
+        if (colorsCount <= 0) {
             return new VariantColorPalette(0);
-        else if (colorsCount > Color.values().length)
+        } else if (colorsCount > Color.values().length) {
             colorsCount = Color.values().length;
+        }
 
         VariantColorPalette palette = new VariantColorPalette(colorsCount);
         for (int i = 0; i < palette.colors.length; i++) {
@@ -88,8 +91,9 @@ public class VariantColorPalette implements Cloneable {
     public VariantColor nextColor() {
         VariantColor color = colors[nextColorIndex];
         nextColorIndex++;
-        if (nextColorIndex >= colors.length)
+        if (nextColorIndex >= colors.length) {
             nextColorIndex = 0;
+        }
 
         return color;
     }
@@ -104,8 +108,9 @@ public class VariantColorPalette implements Cloneable {
 
     public Optional<Integer> indexInPalette(VariantColor color) {
         for (int i = 0; i < colors.length; i++) {
-            if (colors[i].equals(color))
+            if (colors[i].equals(color)) {
                 return Optional.of(i);
+            }
         }
 
         return Optional.empty();

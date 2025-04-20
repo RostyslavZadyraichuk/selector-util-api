@@ -81,8 +81,9 @@ public class RationalVariant<E> extends Variant<E> {
         super.decreasePercent(value);
         double diff = minPercent - currentPercent;
 
-        if (diff < 0)
+        if (diff < 0) {
             return 0;
+        }
 
         currentPercent += diff;
         return diff;
