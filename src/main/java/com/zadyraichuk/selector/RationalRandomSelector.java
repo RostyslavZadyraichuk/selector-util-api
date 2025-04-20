@@ -24,7 +24,9 @@ public class RationalRandomSelector
     public static RationalRandomSelector of(AbstractRandomSelector<String, ? extends Variant<String>> selector) {
         RationalVariantsList<String> newList = new RationalVariantsList<>();
         VariantsCollection<String, ? extends Variant<String>> oldList = selector.getVariantsList();
-        newList.setPalette(((AbstractVariantsList<?, ?>) oldList).getPalette());
+        VariantColorPalette palette = ((AbstractVariantsList<?, ?>) oldList).getPalette();
+        palette.resetColorIndex();
+        newList.setPalette(palette);
         for (Variant<String> variant : oldList) {
             newList.add(RationalVariant.of(variant));
         }

@@ -23,7 +23,9 @@ public class RandomSelector
     public static RandomSelector of(AbstractRandomSelector<String, ? extends Variant<String>> selector) {
         VariantsList<String> newList = new VariantsList<>();
         VariantsCollection<String, ? extends Variant<String>> oldList = selector.getVariantsList();
-        newList.setPalette(((AbstractVariantsList<?, ?>) oldList).getPalette());
+        VariantColorPalette palette = ((AbstractVariantsList<?, ?>) oldList).getPalette();
+        palette.resetColorIndex();
+        newList.setPalette(palette);
         for (Variant<String> variant : oldList) {
             newList.add(Variant.of(variant, VariantsCollection.totalWeight(oldList)));
         }

@@ -52,7 +52,7 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
 
     public void addColored(V variant) {
         variants.add(variant);
-        setNextColor(variant);
+        setNextColor();
     }
 
     @Override
@@ -69,15 +69,13 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
     @Override
     public void remove(int index) {
         variants.remove(index);
-        V lastVariant = variants.get(variants.size() - 1);
-        setNextColor(lastVariant);
+        setNextColor();
     }
 
     @Override
     public void remove(V variant) {
         variants.remove(variant);
-        V lastVariant = variants.get(variants.size() - 1);
-        setNextColor(lastVariant);
+        setNextColor();
     }
 
     @Override
@@ -204,11 +202,16 @@ public abstract class AbstractVariantsList<E, V extends Variant<E>>
         }
     }
 
-    private void setNextColor(V variant) {
-        Optional<Integer> colorIndex = palette.indexInPalette(variant.getColor());
-        if (colorIndex.isPresent()) {
-            palette.setColorIndex(colorIndex.get());
-            palette.nextColor();
+    private void setNextColor() {
+        if (variants.isEmpty()) {
+            palette.resetColorIndex();
+        } else {
+            V lastVariant = variants.get(variants.size() - 1);
+            Optional<Integer> colorIndex = palette.indexInPalette(lastVariant.getColor());
+            if (colorIndex.isPresent()) {
+                palette.setColorIndex(colorIndex.get());
+                palette.nextColor();
+            }
         }
     }
 
