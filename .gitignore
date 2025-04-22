@@ -1,6 +1,7 @@
 #Code editors
 .idea/*
 .vscode/*
+*.iml
 
 #Output folders
 /target/**
